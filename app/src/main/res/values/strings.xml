@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SrtMediaPlayerExample</string>
+    <string name="launch_activity_one">Launch Activity One</string>
 </resources>
