@@ -79,7 +79,7 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         surfaceHolder = player_surface.holder
         surfaceHolder.addCallback(this)
 
-        play_pause.setOnClickListener(View.OnClickListener {
+        play_pause.setOnClickListener({
             if(playing)
                 mediaPlayer.pause()
             else
