@@ -15,9 +15,28 @@
         android:text="@string/launch_activity_one"
         android:background="?attr/selectableItemBackground"/>
 
-    <View
+    <Button
         android:layout_width="match_parent"
         android:layout_height="0sp"
-        android:layout_weight="3"/>
+        android:layout_weight="1"
+        android:id="@+id/activityTwo"
+        android:text="@string/launch_activity_two"
+        android:background="?attr/selectableItemBackground"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:id="@+id/activityThree"
+        android:text="@string/launch_activity_three"
+        android:background="?attr/selectableItemBackground"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:id="@+id/activityFour"
+        android:text="@string/launch_activity_four"
+        android:background="?attr/selectableItemBackground"/>
 
 </LinearLayout>

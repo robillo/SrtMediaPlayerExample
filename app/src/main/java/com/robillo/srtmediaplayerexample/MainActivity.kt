@@ -15,5 +15,17 @@ class MainActivity : AppCompatActivity() {
         activityOne.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this, OneActivity::class.java))
         })
+
+        activityTwo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this, TwoActivity::class.java))
+        })
+
+        activityThree.setOnClickListener(View.OnClickListener {
+
+        })
+
+        activityFour.setOnClickListener(View.OnClickListener {
+
+        })
     }
 }
