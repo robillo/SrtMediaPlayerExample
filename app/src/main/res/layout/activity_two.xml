@@ -24,8 +24,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_subtitle"
             android:gravity="center_horizontal"
-            android:textColor="@color/colorAccent"
-            android:textSize="22sp"/>
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp"/>
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_seek_bar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_current_duration"
                 android:gravity="start"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"/>
 
             <TextView
@@ -47,13 +52,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_max_duration"
                 android:gravity="end"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"/>
-
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress_seek_bar"/>
 
         </LinearLayout>
 

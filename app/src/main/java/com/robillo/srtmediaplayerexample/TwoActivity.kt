@@ -14,6 +14,8 @@ import java.util.*
 
 class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
 
+    var playing : Boolean = false
+
     override fun onPrepared(mp: MediaPlayer?) {
         //Set start time, end time (max time)
     }
@@ -78,8 +80,33 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         surfaceHolder.addCallback(this)
 
         play_pause.setOnClickListener(View.OnClickListener {
-            mediaPlayer.start()
+            if(playing)
+                mediaPlayer.pause()
+            else
+                mediaPlayer.start()
         })
+    }
+
+    override fun onPause() {
+        if(mediaPlayer.isPlaying) mediaPlayer.pause()
+        playing = false
+        super.onPause()
+    }
+
+    override fun onStop() {
+        if(mediaPlayer.isPlaying) mediaPlayer.pause()
+        playing = false
+        super.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
     }
 
     private fun findTrackIndexFor(mediaTrackType: Int, trackInfo: Array<MediaPlayer.TrackInfo>): Int {
