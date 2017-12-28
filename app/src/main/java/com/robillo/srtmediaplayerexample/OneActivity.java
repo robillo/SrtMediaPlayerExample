@@ -69,24 +69,12 @@ public class OneActivity extends AppCompatActivity implements SurfaceHolder.Call
         try {
             mediaPlayer = new MediaPlayer();
             mediaPlayer.setDisplay(surfaceHolder);
-//            AssetFileDescriptor afd2 = OneActivity.this.getResources().openRawResourceFd(R.raw.star);
-//            if (afd2 == null) {
-//                Log.e("dckd", "null afd2");
-//                return;
-//            }
-//            afd2.close();
+
             mediaPlayer.setDataSource(this, Uri.parse(videoSrc));
             mediaPlayer.setOnPreparedListener(this);
             mediaPlayer.prepare();
 
-//            AssetFileDescriptor afd = OneActivity.this.getResources().openRawResourceFd(R.raw.star_srt);
-//            if (afd == null) {
-//                Log.e("dckd", "null afd1");
-//                return;
-//            }
-//            mediaPlayer.addTimedTextSource(subTitleSrc, MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
             mediaPlayer.addTimedTextSource(getSubtitleFile(R.raw.star_srt), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-//            afd.close();
             int textTrackIndex = findTrackIndexFor(MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mediaPlayer.getTrackInfo());
             if (textTrackIndex >= 0) {
                 mediaPlayer.selectTrack(textTrackIndex);

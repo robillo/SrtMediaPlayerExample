@@ -1,9 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.robillo.srtmediaplayerexample.TwoActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <SurfaceView
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:id="@+id/player_surface"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_subtitle"
+            android:gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_current_duration"
+                android:gravity="start"/>
+
+            <TextView
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_max_duration"
+                android:gravity="end"/>
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress_seek_bar"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/minus_ten_secs"
+                android:gravity="center_horizontal"
+                android:text="@string/minus_10"
+                style="?attr/buttonBarButtonStyle"/>
+
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/play_pause"
+                android:gravity="center_horizontal"
+                android:text="@string/play_pause"
+                style="?attr/buttonBarButtonStyle"/>
+
+            <Button
+                android:layout_width="0sp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/plus_ten_secs"
+                android:gravity="center_horizontal"
+                android:text="@string/plus_10"
+                style="?attr/buttonBarButtonStyle"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

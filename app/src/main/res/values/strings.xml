@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Srt Media Player</string>
     <string name="launch_activity_one">Launch Activity One [Basic Audio + Srt Setup]</string>
-    <string name="launch_activity_two">Launch Activity Two [Audio + Srt Setup with Activity Lifecycle Handling]</string>
+    <string name="launch_activity_two">Launch Activity Two [Audio + Srt with other Player Characteristics]</string>
     <string name="launch_activity_three">Launch Activity Three [Audio + Srt Setup with Media Player UI]</string>
     <string name="launch_activity_four">Launch Activity Three [Fully Functional Media Player with UI]</string>
+    <string name="minus_10">Minus 10</string>
+    <string name="play_pause">Play / Pause</string>
+    <string name="plus_10">Plus 10</string>
 </resources>
