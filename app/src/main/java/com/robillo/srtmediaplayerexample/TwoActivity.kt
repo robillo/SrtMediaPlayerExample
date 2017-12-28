@@ -14,10 +14,13 @@ import java.util.*
 
 class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
 
-    var playing : Boolean = false
+    var isTrackAlreadyPlaying : Boolean = false
+    var stopPosition : Int = -1
 
     override fun onPrepared(mp: MediaPlayer?) {
         //Set start time, end time (max time)
+        if(mp!=null)
+            mediaPlayer = mp
     }
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
@@ -73,6 +76,10 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_two)
 
+        if(savedInstanceState != null){
+            stopPosition = savedInstanceState.getInt("position")
+        }
+
         audioSrc = "android.resource://" + getPackageName() + "/raw/star"
         subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
 
@@ -80,33 +87,56 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         surfaceHolder.addCallback(this)
 
         play_pause.setOnClickListener({
-            if(playing)
+            if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
                 mediaPlayer.pause()
-            else
+                isTrackAlreadyPlaying = false
+            }
+            else{
                 mediaPlayer.start()
+                isTrackAlreadyPlaying = true
+            }
         })
     }
 
     override fun onPause() {
-        if(mediaPlayer.isPlaying) mediaPlayer.pause()
-        playing = false
+        if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
+            mediaPlayer.pause()
+            isTrackAlreadyPlaying = false
+        }
         super.onPause()
     }
 
     override fun onStop() {
-        if(mediaPlayer.isPlaying) mediaPlayer.pause()
-        playing = false
+        if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
+            mediaPlayer.release()
+            isTrackAlreadyPlaying = false
+        }
         super.onStop()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
     }
 
     override fun onRestart() {
         super.onRestart()
-        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
+        if(!mediaPlayer.isPlaying && !isTrackAlreadyPlaying){
+            mediaPlayer.start()
+            isTrackAlreadyPlaying = true
+        }
+    }
+
+    override fun onResume() {
+//        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
+        if(stopPosition!=-1 && !mediaPlayer.isPlaying && !isTrackAlreadyPlaying){
+            mediaPlayer.seekTo(stopPosition)
+            mediaPlayer.start()
+            isTrackAlreadyPlaying = true
+        }
+        super.onResume()
+    }
+
+    //called before onPause
+    override fun onSaveInstanceState(outState: Bundle?) {
+        stopPosition = mediaPlayer.currentPosition
+        outState?.putInt("position", stopPosition)
+        super.onSaveInstanceState(outState)
     }
 
     private fun findTrackIndexFor(mediaTrackType: Int, trackInfo: Array<MediaPlayer.TrackInfo>): Int {
