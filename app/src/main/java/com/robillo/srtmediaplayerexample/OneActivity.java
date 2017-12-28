@@ -1,5 +1,6 @@
 package com.robillo.srtmediaplayerexample;
 
+import android.annotation.SuppressLint;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -19,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 
 public class OneActivity extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
 
@@ -97,8 +99,11 @@ public class OneActivity extends AppCompatActivity implements SurfaceHolder.Call
                 @Override
                 public void onTimedText(final MediaPlayer mediaPlayer, final TimedText timedText) {
                     if (timedText != null) {
-                        Log.e("test", "subtitle: " + timedText.getText());
-                        tv_subtitle.setText(timedText.getText());
+                        int seconds = mediaPlayer.getCurrentPosition() / 1000;
+                        int secondsMax = mediaPlayer.getDuration() / 1000;
+                        String temp = "[ " + secondsToDuration(seconds) + " ] " + timedText.getText() + "[ "
+                                + secondsToDuration(secondsMax) + " ] ";
+                        tv_subtitle.setText(temp);
                     }
                     else {
                         Log.e("test", "null timed text");
@@ -183,5 +188,13 @@ public class OneActivity extends AppCompatActivity implements SurfaceHolder.Call
                 }
             }
         }
+    }
+
+
+    // To display the seconds in the duration format 00:00:00
+    @SuppressLint("DefaultLocale")
+    public String secondsToDuration(int seconds) {
+        return String.format("%02d:%02d:%02d", seconds / 3600,
+                (seconds % 3600) / 60, (seconds % 60), Locale.US);
     }
 }
