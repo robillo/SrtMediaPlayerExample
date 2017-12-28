@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class OneActivity extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
 
-    MediaPlayer mPlayer, mediaPlayer;
+    MediaPlayer mediaPlayer;
     SurfaceHolder surfaceHolder;
     SurfaceView playerSurfaceView;
     TextView tv_subtitle;
