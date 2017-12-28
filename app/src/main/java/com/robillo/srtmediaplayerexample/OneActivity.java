@@ -44,17 +44,13 @@ public class OneActivity extends AppCompatActivity implements SurfaceHolder.Call
         videoSrc = "android.resource://" + getPackageName() + "/raw/star";
         subTitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt";
 
-        playerSurfaceView = (SurfaceView) findViewById(R.id.player_surface);
-        tv_subtitle = (TextView) findViewById(R.id.tv_subtitle);
+        playerSurfaceView = findViewById(R.id.player_surface);
+        tv_subtitle = findViewById(R.id.tv_subtitle);
         surfaceHolder = playerSurfaceView.getHolder();
         surfaceHolder.addCallback(this);
-
-//        mPlayer = MediaPlayer.create(OneActivity.this, R.raw.star);
-//        mPlayer.start();
     }
 
     public void onDestroy() {
-//        mPlayer.stop();
         mediaPlayer.stop();
         super.onDestroy();
     }
@@ -182,7 +178,8 @@ public class OneActivity extends AppCompatActivity implements SurfaceHolder.Call
     // To display the seconds in the duration format 00:00:00
     @SuppressLint("DefaultLocale")
     public String secondsToDuration(int seconds) {
-        return String.format("%02d:%02d:%02d", seconds / 3600,
+        //noinspection MalformedFormatString
+        return String.format("%02d:%02d",
                 (seconds % 3600) / 60, (seconds % 60), Locale.US);
     }
 }
