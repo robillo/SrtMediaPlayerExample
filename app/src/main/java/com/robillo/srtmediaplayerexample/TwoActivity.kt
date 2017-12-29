@@ -28,7 +28,7 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
     }
 
     override fun surfaceDestroyed(holder: SurfaceHolder?) {
-
+        mediaPlayer.pause()
     }
 
     override fun surfaceCreated(holder: SurfaceHolder?) {
@@ -36,7 +36,12 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         mediaPlayer.setDisplay(surfaceHolder)
         mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
         mediaPlayer.setOnPreparedListener(this)
-        mediaPlayer.prepare()
+        try {
+            mediaPlayer.prepare()
+        }
+        catch (e : IllegalStateException){
+
+        }
 
         //MediaPlayer addTimedTextSource
         mediaPlayer.addTimedTextSource(getSubtitleFile(R.raw.star_srt), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
@@ -76,10 +81,6 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_two)
 
-        if(savedInstanceState != null){
-            stopPosition = savedInstanceState.getInt("position")
-        }
-
         audioSrc = "android.resource://" + getPackageName() + "/raw/star"
         subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
 
@@ -98,6 +99,20 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         })
     }
 
+    //called before onPause
+    override fun onSaveInstanceState(outState: Bundle?) {
+        stopPosition = mediaPlayer.currentPosition
+        outState?.putInt("position", stopPosition)
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if(savedInstanceState != null){
+            stopPosition = savedInstanceState.getInt("position")
+        }
+    }
+
     override fun onPause() {
         if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
             mediaPlayer.pause()
@@ -106,37 +121,13 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         super.onPause()
     }
 
-    override fun onStop() {
-        if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
-            mediaPlayer.release()
-            isTrackAlreadyPlaying = false
-        }
-        super.onStop()
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        if(!mediaPlayer.isPlaying && !isTrackAlreadyPlaying){
-            mediaPlayer.start()
-            isTrackAlreadyPlaying = true
-        }
-    }
-
     override fun onResume() {
-//        if(playing == true && !mediaPlayer.isPlaying) mediaPlayer.start()
         if(stopPosition!=-1 && !mediaPlayer.isPlaying && !isTrackAlreadyPlaying){
             mediaPlayer.seekTo(stopPosition)
             mediaPlayer.start()
             isTrackAlreadyPlaying = true
         }
         super.onResume()
-    }
-
-    //called before onPause
-    override fun onSaveInstanceState(outState: Bundle?) {
-        stopPosition = mediaPlayer.currentPosition
-        outState?.putInt("position", stopPosition)
-        super.onSaveInstanceState(outState)
     }
 
     private fun findTrackIndexFor(mediaTrackType: Int, trackInfo: Array<MediaPlayer.TrackInfo>): Int {
