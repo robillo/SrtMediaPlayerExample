@@ -62,6 +62,7 @@ public class ThreeActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         if(playIntent==null){
             playIntent = new Intent(this, MusicService.class);
+            playIntent.setAction( MusicService.ACTION_PLAY );
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }
