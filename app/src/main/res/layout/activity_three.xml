@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.robillo.srtmediaplayerexample.three_activity.ThreeActivity">
 
+    <Button
+        android:id="@+id/play_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play / Pause"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"/>
 </android.support.constraint.ConstraintLayout>

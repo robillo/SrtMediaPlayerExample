@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.robillo.srtmediaplayerexample.three_activity.ThreeActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         activityThree.setOnClickListener(View.OnClickListener {
-
+            startActivity(Intent(this, ThreeActivity::class.java))
         })
 
         activityFour.setOnClickListener(View.OnClickListener {
