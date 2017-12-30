@@ -40,6 +40,7 @@
                     android:id="@+id/back"
                     android:contentDescription="@string/back"
                     android:padding="10sp"
+                    android:layout_margin="10sp"
                     android:src="@drawable/ic_arrow_back_white_24dp"
                     android:background="?attr/selectableItemBackground"/>
 
@@ -54,6 +55,7 @@
                     android:id="@+id/share"
                     android:contentDescription="@string/back"
                     android:padding="10sp"
+                    android:layout_margin="10sp"
                     android:src="@drawable/ic_share_white_24dp"
                     android:background="?attr/selectableItemBackground"/>
 

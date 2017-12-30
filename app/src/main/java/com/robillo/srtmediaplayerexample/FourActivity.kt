@@ -3,6 +3,7 @@ package com.robillo.srtmediaplayerexample
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.github.ybq.android.spinkit.Style
 import com.github.ybq.android.spinkit.style.Wave
@@ -15,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_four.*
 
 class FourActivity : AppCompatActivity(), BetterVideoCallback, BetterVideoProgressCallback {
 
+    var myIsPlaying : Boolean = false
+
     override fun onVideoProgressUpdate(position: Int, duration: Int) {
 
     }
@@ -25,6 +28,27 @@ class FourActivity : AppCompatActivity(), BetterVideoCallback, BetterVideoProgre
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_four)
 
+        preparePlayer()
+
+        play_pause.setOnClickListener {
+            if(player.isPrepared){
+                if(player.isPlaying && myIsPlaying){
+                    Log.e("player", "is playing")
+                    player.pause()
+                    Log.e("player", "now paused")
+                }
+                else if (!player.isPlaying && !myIsPlaying){
+                    player.start()
+                    Log.e("player", "now playing")
+                }
+                else {
+                    Log.e("else", "else" + (player.isPlaying) + (myIsPlaying))
+                }
+            }
+        }
+    }
+
+    fun preparePlayer() {
         player.setLoop(false)
         player.setLoadingStyle(2)
         player.disableControls()
@@ -34,41 +58,39 @@ class FourActivity : AppCompatActivity(), BetterVideoCallback, BetterVideoProgre
         player.setProgressCallback(this)
 
         player.setCallback(this)
-
-        play_pause.setOnClickListener {
-            if(player.isPrepared){
-                if(player.isPlaying){
-                    player.pause()
-                }
-                else{
-                    player.start()
-                }
-            }
-        }
     }
 
     override fun onResume() {
         super.onResume()
-        player.start()
+//        if(!player.isPlaying && !myIsPlaying){
+//            player.start()
+//            myIsPlaying = true
+//        }
     }
 
     public override fun onPause() {
         super.onPause()
         // Make sure the player stops playing if the user presses the home button.
-        player.pause()
+        if(player.isPlaying && myIsPlaying){
+            player.pause()
+            myIsPlaying = false
+        }
     }
 
-    override fun onStop() {
-        super.onStop()
-        player.stop()
-    }
+//    override fun onStop() {
+//        super.onStop()
+//        myIsPlaying = false
+//        player.stop()
+//    }
 
     override fun onStarted(player: BetterVideoPlayer) {
         play_pause.setImageDrawable(resources.getDrawable(R.drawable.ic_pause_circle_filled_black_24dp))
+        myIsPlaying = true
     }
 
     override fun onPaused(player: BetterVideoPlayer) {
         play_pause.setImageDrawable(resources.getDrawable(R.drawable.ic_play_circle_filled_black_24dp))
+        myIsPlaying = false
     }
 
     override fun onPreparing(player: BetterVideoPlayer) {
