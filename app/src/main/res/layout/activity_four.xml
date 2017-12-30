@@ -18,12 +18,11 @@
         android:layout_height="0sp"
         android:layout_weight="3">
 
-        <ImageView
+        <com.halilibo.bettervideoplayer.BetterVideoPlayer
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/cover"
-            android:contentDescription="@string/cover"
-            android:background="#000000"/>
+            android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,6 +79,11 @@
                 android:textSize="18sp"
                 android:gravity="center_horizontal"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,11 +126,6 @@
         </LinearLayout>
 
     </FrameLayout>
-
-    <SeekBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/progress_seek_bar"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         activityFour.setOnClickListener(View.OnClickListener {
-
+            startActivity(Intent(this, FourActivity::class.java))
         })
     }
 }

@@ -29,7 +29,7 @@ public class ThreeActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_three);
 
-        songList.add("android.resource://" + getPackageName() + "/raw/star");
+        songList.add("http://readrush.in/audio/subtle/subtle_open.mp3");
 
         mPlayPause = findViewById(R.id.play_pause);
         mPlayPause.setOnClickListener(this);
@@ -62,7 +62,7 @@ public class ThreeActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
         if(playIntent==null){
             playIntent = new Intent(this, MusicService.class);
-            playIntent.setAction( MusicService.ACTION_PLAY );
+            playIntent.setAction(MusicService.Companion.getACTION_PLAY());
             bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
             startService(playIntent);
         }

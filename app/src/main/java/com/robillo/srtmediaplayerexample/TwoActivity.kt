@@ -13,10 +13,15 @@ import java.util.*
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Handler
+import android.widget.Toast
 import wseemann.media.FFmpegMediaMetadataRetriever
 
 
-class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
+class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener, MediaPlayer.OnSeekCompleteListener {
+
+    override fun onSeekComplete(mp: MediaPlayer?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     var isTrackAlreadyPlaying : Boolean = false
     var stopPosition : Int = -1
@@ -41,6 +46,27 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         audioSrc = "http://readrush.in/audio/subtle/subtle_open.mp3"
         subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
 
+        mediaPlayer = MediaPlayer()
+        mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
+        mediaPlayer.setOnPreparedListener(this)
+        try {
+            mediaPlayer.prepare()
+        }
+        catch (e : Exception){
+
+        }
+
+        val mmr = FFmpegMediaMetadataRetriever()
+        mmr.setDataSource(audioSrc)
+        var duration = java.lang.Long.parseLong(mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION))
+        duration = duration / 1000
+        val minute = duration / 60
+        val second = duration - minute * 60
+        mmr.release()
+        val time = minute.toString() + ":" + second.toString()
+        tv_max_duration.text = (time)
+        progress_seek_bar.max = duration.toInt()
+
         initMediaPlayer()
 
         play_pause.setOnClickListener({
@@ -57,15 +83,6 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     fun initMediaPlayer() {
         Handler().post({
-            mediaPlayer = MediaPlayer()
-            mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
-            mediaPlayer.setOnPreparedListener(this)
-            try {
-                mediaPlayer.prepare()
-            }
-            catch (e : Exception){
-
-            }
             //MediaPlayer addTimedTextSource
             mediaPlayer.addTimedTextSource(getSubtitleFile(R.raw.star_srt), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
             val textTrackIndex = findTrackIndexFor(MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mediaPlayer.trackInfo)
@@ -77,18 +94,6 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                 Log.e("test", "Cannot find text track!")
             }
 
-            val mmr = FFmpegMediaMetadataRetriever()
-            mmr.setDataSource(audioSrc)
-//            mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM)
-//            mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST)
-            var duration = java.lang.Long.parseLong(mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION))
-            duration = duration / 1000
-            val minute = duration / 60
-            val second = duration - minute * 60
-            mmr.release()
-            val time = minute.toString() + ":" + second.toString()
-            tv_max_duration.text = (time)
-
             mediaPlayer.setOnTimedTextListener({ mp, timedText ->
                 if(timedText != null){
                     val seconds = mp.currentPosition / 1000
@@ -98,9 +103,18 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                     tv_current_duration.text = cd
                     tv_subtitle.text = timedText.text
 
-//                    val secondsMax = mp.duration / 1000
-//                    progress_seek_bar.max = secondsMax
-//                    val md = secondsToDuration(secondsMax)
+                    val mmr = FFmpegMediaMetadataRetriever()
+                    mmr.setDataSource(audioSrc)
+                    var duration = java.lang.Long.parseLong(mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION))
+                    duration = duration / 1000
+                    val minute = duration / 60
+                    val second = duration - minute * 60
+                    mmr.release()
+                    val time = minute.toString() + ":" + second.toString()
+                    tv_max_duration.text = (time)
+                    progress_seek_bar.max = duration.toInt()
+
+                    Toast.makeText(this, timedText.text, Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -213,5 +227,4 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
     fun secondsToDuration(seconds : Int) : String {
         return String.format("%02d:%02d", (seconds % 3600) / 60, (seconds % 60), Locale.US)
     }
-
 }
