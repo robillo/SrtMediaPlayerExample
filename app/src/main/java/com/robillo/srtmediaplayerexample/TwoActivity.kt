@@ -13,6 +13,7 @@ import java.util.*
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Handler
+import wseemann.media.FFmpegMediaMetadataRetriever
 
 
 class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
@@ -24,19 +25,12 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         //Set start time, end time (max time)
         if(mp!=null){
             mediaPlayer = mp
-            runOnUiThread {
-                val secondsMax = mp.duration / 1000
-                progress_seek_bar.max = secondsMax
-                val md = secondsToDuration(secondsMax)
-                tv_max_duration.text = md
-            }
         }
     }
 
     private val TAG = "robillo"
     private var audioSrc : String ?= null
     private var subtitleSrc : String ?= null
-    private lateinit var surfaceHolder : SurfaceHolder
     private lateinit var mediaPlayer : MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +77,18 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
                 Log.e("test", "Cannot find text track!")
             }
 
+            val mmr = FFmpegMediaMetadataRetriever()
+            mmr.setDataSource(audioSrc)
+//            mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM)
+//            mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST)
+            var duration = java.lang.Long.parseLong(mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_DURATION))
+            duration = duration / 1000
+            val minute = duration / 60
+            val second = duration - minute * 60
+            mmr.release()
+            val time = minute.toString() + ":" + second.toString()
+            tv_max_duration.text = (time)
+
             mediaPlayer.setOnTimedTextListener({ mp, timedText ->
                 if(timedText != null){
                     val seconds = mp.currentPosition / 1000
@@ -91,6 +97,10 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
                     tv_current_duration.text = cd
                     tv_subtitle.text = timedText.text
+
+//                    val secondsMax = mp.duration / 1000
+//                    progress_seek_bar.max = secondsMax
+//                    val md = secondsToDuration(secondsMax)
                 }
             })
 

@@ -43,7 +43,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private MediaSessionManager mManager;
     private MediaSession mSession;
     private MediaController mController;
-    private MediaPlayer mMediaPlayer;
+    public MediaPlayer mMediaPlayer;
     private ArrayList<String> songs;
     private final IBinder musicBind = new MusicBinder();
 
