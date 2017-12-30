@@ -12,6 +12,7 @@ import java.io.*
 import java.util.*
 import android.app.ActivityManager
 import android.content.Context
+import android.os.Handler
 
 
 class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
@@ -21,8 +22,15 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     override fun onPrepared(mp: MediaPlayer?) {
         //Set start time, end time (max time)
-        if(mp!=null)
+        if(mp!=null){
             mediaPlayer = mp
+            runOnUiThread {
+                val secondsMax = mp.duration / 1000
+                progress_seek_bar.max = secondsMax
+                val md = secondsToDuration(secondsMax)
+                tv_max_duration.text = md
+            }
+        }
     }
 
     private val TAG = "robillo"
@@ -35,7 +43,8 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_two)
 
-        audioSrc = "android.resource://" + getPackageName() + "/raw/star"
+//        audioSrc = "android.resource://" + getPackageName() + "/raw/star"
+        audioSrc = "http://readrush.in/audio/subtle/subtle_open.mp3"
         subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
 
         initMediaPlayer()
@@ -53,44 +62,40 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
     }
 
     fun initMediaPlayer() {
-        mediaPlayer = MediaPlayer()
-        mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
-        mediaPlayer.setOnPreparedListener(this)
-        try {
-            mediaPlayer.prepare()
-        }
-        catch (e : IllegalStateException){
-
-        }
-
-        //MediaPlayer addTimedTextSource
-        mediaPlayer.addTimedTextSource(getSubtitleFile(R.raw.star_srt), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
-        val textTrackIndex = findTrackIndexFor(MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mediaPlayer.trackInfo)
-        if (textTrackIndex >= 0){
-            mediaPlayer.selectTrack(textTrackIndex)
-            Log.e("test", "Track Selected!")
-        }
-        else {
-            Log.e("test", "Cannot find text track!")
-        }
-
-        mediaPlayer.setOnTimedTextListener({ mp, timedText ->
-            if(timedText != null){
-                val seconds = mp.currentPosition / 1000
-                val secondsMax = mp.duration / 1000
-                progress_seek_bar.max = secondsMax
-                progress_seek_bar.progress = seconds
-                val cd = secondsToDuration(seconds)
-                val md = secondsToDuration(secondsMax)
-
-                tv_current_duration.text = cd
-                tv_max_duration.text = md
-
-                tv_subtitle.text = timedText.text
+        Handler().post({
+            mediaPlayer = MediaPlayer()
+            mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
+            mediaPlayer.setOnPreparedListener(this)
+            try {
+                mediaPlayer.prepare()
             }
-        })
+            catch (e : Exception){
 
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            }
+            //MediaPlayer addTimedTextSource
+            mediaPlayer.addTimedTextSource(getSubtitleFile(R.raw.star_srt), MediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
+            val textTrackIndex = findTrackIndexFor(MediaPlayer.TrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT, mediaPlayer.trackInfo)
+            if (textTrackIndex >= 0){
+                mediaPlayer.selectTrack(textTrackIndex)
+                Log.e("test", "Track Selected!")
+            }
+            else {
+                Log.e("test", "Cannot find text track!")
+            }
+
+            mediaPlayer.setOnTimedTextListener({ mp, timedText ->
+                if(timedText != null){
+                    val seconds = mp.currentPosition / 1000
+                    progress_seek_bar.progress = seconds
+                    val cd = secondsToDuration(seconds)
+
+                    tv_current_duration.text = cd
+                    tv_subtitle.text = timedText.text
+                }
+            })
+
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        })
     }
 
     //called before onPause
@@ -130,6 +135,11 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
             mediaPlayer.pause()
             isTrackAlreadyPlaying = false
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
     }
 
     private fun findTrackIndexFor(mediaTrackType: Int, trackInfo: Array<MediaPlayer.TrackInfo>): Int {
@@ -192,18 +202,6 @@ class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     fun secondsToDuration(seconds : Int) : String {
         return String.format("%02d:%02d", (seconds % 3600) / 60, (seconds % 60), Locale.US)
-    }
-
-    private fun isAppOnForeground(context: Context, appPackageName: String): Boolean {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val appProcesses = activityManager.runningAppProcesses ?: return false
-        for (appProcess in appProcesses) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName == appPackageName) {
-                //                Log.e("app",appPackageName);
-                return true
-            }
-        }
-        return false
     }
 
 }
