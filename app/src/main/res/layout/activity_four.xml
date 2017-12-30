@@ -155,7 +155,9 @@
             android:padding="10sp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_play_circle_filled_black_24dp"
-            android:background="?attr/selectableItemBackground"/>
+            android:background="?attr/selectableItemBackground"
+            android:visibility="invisible"
+            android:clickable="true"/>
 
         <ImageButton
             android:layout_width="0sp"
