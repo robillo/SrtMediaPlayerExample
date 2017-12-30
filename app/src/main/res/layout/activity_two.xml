@@ -5,91 +5,174 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.robillo.srtmediaplayerexample.TwoActivity">
+    tools:context="com.robillo.srtmediaplayerexample.FourActivity">
 
     <SurfaceView
         android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_weight="1"
+        android:layout_height="12sp"
+        android:visibility="gone"
         android:id="@+id/player_surface"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="3">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cover"
+            android:contentDescription="@string/cover"
+            android:background="#000000"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/back"
+                    android:contentDescription="@string/back"
+                    android:padding="10sp"
+                    android:src="@drawable/ic_arrow_back_white_24dp"
+                    android:background="?attr/selectableItemBackground"/>
+
+                <View
+                    android:layout_width="0sp"
+                    android:layout_height="12sp"
+                    android:layout_weight="1"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/share"
+                    android:contentDescription="@string/back"
+                    android:padding="10sp"
+                    android:src="@drawable/ic_share_white_24dp"
+                    android:background="?attr/selectableItemBackground"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:id="@+id/title"
+                android:text="@string/the_monk_who_sold_his_ferrari"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:id="@+id/count"
+                android:text="@string/rush_1_10"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:gravity="center_horizontal"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:id="@+id/tv_subtitle"
+                tools:text="@string/the_monk_who_sold_his_ferrari"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:gravity="center_horizontal"
+                android:layout_gravity="bottom"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom">
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:id="@+id/tv_current_duration"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:gravity="start"/>
+
+                <TextView
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:id="@+id/tv_max_duration"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_seek_bar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0sp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_subtitle"
-            android:gravity="center_horizontal"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp"/>
+        <ImageButton
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:layout_height="50sp"
+            android:id="@+id/prev_10"
+            android:contentDescription="@string/back"
+            android:padding="10sp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_replay_10_black_24dp"
+            android:background="?attr/selectableItemBackground"
+            tools:ignore="NestedWeights" />
 
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/progress_seek_bar"/>
+        <ImageButton
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:layout_height="70sp"
+            android:id="@+id/play_pause"
+            android:contentDescription="@string/back"
+            android:padding="10sp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_play_circle_filled_black_24dp"
+            android:background="?attr/selectableItemBackground"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_current_duration"
-                android:gravity="start"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_max_duration"
-                android:gravity="end"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/minus_ten_secs"
-                android:gravity="center_horizontal"
-                android:text="@string/minus_10"
-                style="?attr/buttonBarButtonStyle"/>
-
-            <Button
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/play_pause"
-                android:gravity="center_horizontal"
-                android:text="@string/play_pause"
-                style="?attr/buttonBarButtonStyle"/>
-
-            <Button
-                android:layout_width="0sp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/plus_ten_secs"
-                android:gravity="center_horizontal"
-                android:text="@string/plus_10"
-                style="?attr/buttonBarButtonStyle"/>
-
-        </LinearLayout>
+        <ImageButton
+            android:layout_width="0sp"
+            android:layout_weight="1"
+            android:layout_height="50sp"
+            android:id="@+id/next_10"
+            android:contentDescription="@string/back"
+            android:padding="10sp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_forward_10_black_24dp"
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 

@@ -14,7 +14,7 @@ import android.app.ActivityManager
 import android.content.Context
 
 
-class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
+class TwoActivity : AppCompatActivity(), MediaPlayer.OnPreparedListener {
 
     var isTrackAlreadyPlaying : Boolean = false
     var stopPosition : Int = -1
@@ -25,17 +25,35 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
             mediaPlayer = mp
     }
 
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+    private val TAG = "robillo"
+    private var audioSrc : String ?= null
+    private var subtitleSrc : String ?= null
+    private lateinit var surfaceHolder : SurfaceHolder
+    private lateinit var mediaPlayer : MediaPlayer
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_two)
+
+        audioSrc = "android.resource://" + getPackageName() + "/raw/star"
+        subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
+
+        initMediaPlayer()
+
+        play_pause.setOnClickListener({
+            if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
+                mediaPlayer.pause()
+                isTrackAlreadyPlaying = false
+            }
+            else{
+                mediaPlayer.start()
+                isTrackAlreadyPlaying = true
+            }
+        })
     }
 
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
-        mediaPlayer.pause()
-    }
-
-    override fun surfaceCreated(holder: SurfaceHolder?) {
+    fun initMediaPlayer() {
         mediaPlayer = MediaPlayer()
-        mediaPlayer.setDisplay(surfaceHolder)
         mediaPlayer.setDataSource(this, Uri.parse(audioSrc))
         mediaPlayer.setOnPreparedListener(this)
         try {
@@ -60,8 +78,10 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
             if(timedText != null){
                 val seconds = mp.currentPosition / 1000
                 val secondsMax = mp.duration / 1000
-                val cd = "[ " + secondsToDuration(seconds) + " ] "
-                val md = "[ " + secondsToDuration(secondsMax) + " ] "
+                progress_seek_bar.max = secondsMax
+                progress_seek_bar.progress = seconds
+                val cd = secondsToDuration(seconds)
+                val md = secondsToDuration(secondsMax)
 
                 tv_current_duration.text = cd
                 tv_max_duration.text = md
@@ -71,34 +91,6 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
         })
 
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-    }
-
-    private val TAG = "robillo"
-    private var audioSrc : String ?= null
-    private var subtitleSrc : String ?= null
-    private lateinit var surfaceHolder : SurfaceHolder
-    private lateinit var mediaPlayer : MediaPlayer
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_two)
-
-        audioSrc = "android.resource://" + getPackageName() + "/raw/star"
-        subtitleSrc = "android.resource://" + getPackageName() + "/raw/star_srt"
-
-        surfaceHolder = player_surface.holder
-        surfaceHolder.addCallback(this)
-
-        play_pause.setOnClickListener({
-            if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
-                mediaPlayer.pause()
-                isTrackAlreadyPlaying = false
-            }
-            else{
-                mediaPlayer.start()
-                isTrackAlreadyPlaying = true
-            }
-        })
     }
 
     //called before onPause
