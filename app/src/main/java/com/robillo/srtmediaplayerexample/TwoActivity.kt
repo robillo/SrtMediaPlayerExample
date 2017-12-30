@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.SurfaceHolder
-import android.view.View
 import kotlinx.android.synthetic.main.activity_two.*
 import java.io.*
 import java.util.*
+import android.app.ActivityManager
+import android.content.Context
+
 
 class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnPreparedListener {
 
@@ -114,11 +116,11 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
     }
 
     override fun onPause() {
+        super.onPause()
         if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
             mediaPlayer.pause()
             isTrackAlreadyPlaying = false
         }
-        super.onPause()
     }
 
     override fun onResume() {
@@ -128,6 +130,14 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
             isTrackAlreadyPlaying = true
         }
         super.onResume()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(mediaPlayer.isPlaying && isTrackAlreadyPlaying){
+            mediaPlayer.pause()
+            isTrackAlreadyPlaying = false
+        }
     }
 
     private fun findTrackIndexFor(mediaTrackType: Int, trackInfo: Array<MediaPlayer.TrackInfo>): Int {
@@ -191,4 +201,17 @@ class TwoActivity : AppCompatActivity(), SurfaceHolder.Callback, MediaPlayer.OnP
     fun secondsToDuration(seconds : Int) : String {
         return String.format("%02d:%02d", (seconds % 3600) / 60, (seconds % 60), Locale.US)
     }
+
+    private fun isAppOnForeground(context: Context, appPackageName: String): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val appProcesses = activityManager.runningAppProcesses ?: return false
+        for (appProcess in appProcesses) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND && appProcess.processName == appPackageName) {
+                //                Log.e("app",appPackageName);
+                return true
+            }
+        }
+        return false
+    }
+
 }

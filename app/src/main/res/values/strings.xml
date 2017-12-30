@@ -7,4 +7,8 @@
     <string name="minus_10">Minus 10</string>
     <string name="play_pause">Play / Pause</string>
     <string name="plus_10">Plus 10</string>
+    <string name="cover">cover</string>
+    <string name="back">back</string>
+    <string name="the_monk_who_sold_his_ferrari">The Monk Who Sold His Ferrari</string>
+    <string name="rush_1_10">(Rush 1/10)</string>
 </resources>
