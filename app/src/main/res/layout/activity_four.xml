@@ -134,15 +134,27 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
+        <!--<ImageButton-->
+            <!--android:layout_width="0sp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="50sp"-->
+            <!--android:id="@+id/prev_10"-->
+            <!--android:contentDescription="@string/back"-->
+            <!--android:padding="10sp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/ic_replay_10_black_24dp"-->
+            <!--android:background="?attr/selectableItemBackground"-->
+            <!--tools:ignore="NestedWeights" />-->
+
         <ImageButton
             android:layout_width="0sp"
             android:layout_weight="1"
             android:layout_height="50sp"
-            android:id="@+id/prev_10"
+            android:id="@+id/prev"
             android:contentDescription="@string/back"
             android:padding="10sp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_replay_10_black_24dp"
+            android:src="@drawable/ic_skip_previous_black_24dp"
             android:background="?attr/selectableItemBackground"
             tools:ignore="NestedWeights" />
 
@@ -157,18 +169,30 @@
             android:src="@drawable/ic_play_circle_filled_black_24dp"
             android:background="?attr/selectableItemBackground"
             android:visibility="invisible"
-            android:clickable="true"/>
+            android:clickable="false"/>
+
+        <!--<ImageButton-->
+            <!--android:layout_width="0sp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="50sp"-->
+            <!--android:id="@+id/next_10"-->
+            <!--android:contentDescription="@string/back"-->
+            <!--android:padding="10sp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/ic_forward_10_black_24dp"-->
+            <!--android:background="?attr/selectableItemBackground"/>-->
 
         <ImageButton
             android:layout_width="0sp"
             android:layout_weight="1"
             android:layout_height="50sp"
-            android:id="@+id/next_10"
+            android:id="@+id/next"
             android:contentDescription="@string/back"
             android:padding="10sp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_forward_10_black_24dp"
-            android:background="?attr/selectableItemBackground"/>
+            android:src="@drawable/ic_skip_next_black_24dp"
+            android:background="?attr/selectableItemBackground"
+            tools:ignore="NestedWeights" />
 
     </LinearLayout>
 

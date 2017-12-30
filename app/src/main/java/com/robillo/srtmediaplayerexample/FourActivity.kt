@@ -45,7 +45,6 @@ class FourActivity : AppCompatActivity(), BetterVideoCallback, BetterVideoProgre
                 }
             }
         }
-
     }
 
     override fun onResume() {
