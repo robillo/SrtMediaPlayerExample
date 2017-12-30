@@ -23,8 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".OneActivity" />
-        <activity android:name=".TwoActivity" />
-        <activity android:name=".three_activity.ThreeActivity" />
+        <activity android:name=".TwoActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".three_activity.ThreeActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".FourActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
